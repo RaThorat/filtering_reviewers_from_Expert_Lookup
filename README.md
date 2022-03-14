@@ -5,7 +5,7 @@ You must have a list of reviewers for the relevant proposal, csv file, downloada
 
 Empty example of files (applicant info, reviewers from Expert Lookup, suggested reviewers, blocked reviewers, dwh database) with their column name is given. 
 
-If you rund the code in IDE, a graphic user interface (GUI) appears:
+If you run the code in IDE, a graphic user interface (GUI) appears:
 Click on 'get proposal info' to upload the file applicant info.
 Click on 'get suggested reviewers' to upload file suggested reviewers by applicant.
 Click on 'get data warehouse reviewers' to upload a reviewer database from funder (This may take one or two minutes.)
