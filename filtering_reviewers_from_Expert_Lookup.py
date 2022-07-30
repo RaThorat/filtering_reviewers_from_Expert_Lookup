@@ -5,7 +5,7 @@ Created on Fri Nov  5 16:16:33 2021
 @author: r.thorat
 """
 
-
+#Preparation of code:
 #Importing various modules required for analysis
 import pandas._libs.tslibs.base
 import numpy as np
@@ -47,6 +47,7 @@ def getnonreviewers():
     import_file_path5 = filedialog.askopenfilename()
     df_nonref = pd.read_excel(import_file_path5)
 
+#Developing user interface with Tkinter:
 #Tkinter buildup    
 root=Tk()
 topframe=Frame(root)
@@ -157,7 +158,6 @@ if len(df_SR1.index)>0:
 #adding suggested reviewers to reviewers list    
 df_RL_ = pd.concat([df_RL, df_SR1], axis=0)
 
-
 #dropping duplicate records
 df_RL_=df_RL_.drop_duplicates(subset=['Dossiernummer', 'Achternaam'],keep="first")
 
@@ -211,17 +211,12 @@ df_RL2.loc[df_RL2['Eindtotaal']!=0, 'Opmerking']='Info is in datawarehouse'
 #writing in 'opmerking'column whether a reviwer already registered is in the datawarehouse or new to the the datawarehouse  is
 df_RL2.loc[df_RL2['Eindtotaal']==0, "Opmerking"]='New'
 
-
-# In[ ]:
-
+#Checking if the reviewer present in the database has worked for the funder in year 2021
 
 #replacing NaN values with zero for further calculation
 df_RL2['PoR2021'].fillna(0, inplace=True)
 df_RL2['NoR2021'].fillna(0, inplace=True)
 df_RL2['NeR2021'].fillna(0, inplace=True)
-
-
-# In[ ]:
 
 
 #changing the type of column 2021 for comparison
@@ -230,26 +225,12 @@ np.int64(df_RL2['NoR2021'])
 np.int64(df_RL2['NeR2021'])
 
 
-# In[ ]:
-
 
 df_RL2.loc[df_RL2['PoR2021']!=0, 'Opmerking']='Info is in datawarehouse, has assessed another application or round this year (2021)'
 
-
-# In[ ]:
-
-
 df_RL2.loc[df_RL2['NoR2021']!=0, 'Opmerking']='Info is in datawarehouse, did not respond to another request or round this year (2021)'
 
-
-# In[ ]:
-
-
 df_RL2.loc[df_RL2['NoR2021']!=0,'Opmerking']='Info is in datawarehouse, said no to review this year (2021) on another application or round'
-
-
-# In[ ]:
-
 
 df_RL2=df_RL2.drop(columns={'Referent_y', 'Titel_x',
        'Achternaam_y', 'Onbeschikbaar', 'Inst_y', 'm/v', 'Opmerking_y', 'Opmerking_x',
@@ -261,36 +242,20 @@ df_RL2=df_RL2.drop(columns={'Referent_y', 'Titel_x',
         'PoR2019', 'PoR2018', 'PoR2017', 'PoR2016', 'PoR2015', 'Eindtotaal',})
 
 
-# In[ ]:
-
-
 df_RL2=df_RL2.rename(columns={'Dossiernummer_x':'Dossiernummer', 'Referent_x':'Referent', 'Titel_y':'Titel',
        'Voornaam_x':'Voornaam', 'Achternaam_x':'Achternaam', 'Inst_x':'Inst', 'Land_x':'Land', 
 'ProposalTitle_x':'ProposalTitle', 'ProposalLink_x':'ProposalLink', 'Hoofdaanvrager_x':'Hoofdaanvrager','ScopusLink_x': 'ScopusLink', 'WebSearchLink_x':'WebSearchLink','Geslacht':'m/v'})
-
-
-# In[ ]:
 
 
 df_RL2=df_RL2[['Dossiernummer', 'Bron', 'Referent', 'Titel','Voornaam','Achternaam', 'Inst', 'Land', 'Email','m/v','Opmerking','ProposalTitle', 'ProposalLink', 'Applicants', 'Hoofdaanvrager',
        'ScopusLink', 'WebSearchLink']]
 
 
-# In[ ]:
-
-
 df_RL2 = df_RL2.assign(Rangorde='')
 df_RL2 = df_RL2.assign(Tuss='')
 df_RL2 = df_RL2.assign(URL='')
 
-
-# In[ ]:
-
-
 df_RL2 =df_RL2.replace(r'^\s*$', np.nan, regex=True)
-
-
-# In[ ]:
 
 
 #changing the order of the columns  
@@ -301,13 +266,21 @@ df_RL2 = df_RL2[['Rangorde','Bron','Dossiernummer', 'Referent', 'Titel', 'Voorna
 
 # # Step For reapplications from 2020, 2019 and from 2018, searching who are those
 
-# In[ ]:
+# Searching for applicants who have previously applied in 2018, 2019 and 2020
+
+#If the applicant from current round year 2021 have applied previous years, the reviewers of those applications can be taken into account while reviewing the current application. 
+#The reviewers can be asked to review the application again because they are familiar with the subject. 
+#Or those reviewers can be avoided to prevent prejudice against the applications.
+
+#In the funders database, we search for common string of application number for a given year.
+#For example, for 2020 the application number usued contains 2020 and the name of the subsidy. 
+#That common string is used below to separate the applications for the year 2018, 2019 and 2020.
 
 
 df_dwh_her=df_dwh1[(df_dwh1['Dossiernummer'].str.contains('COMMON STRING of APPLICATION NUMBERS 2018')) |(df_dwh1['Dossiernummer'].str.contains('COMMON STRING of APPLICATION NUMBERS 2019'))|(df_dwh1['Dossiernummer'].str.contains('COMMON STRING of APPLICATION NUMBERS 2020'))]
 
 
-# In[ ]:
+
 
 
 df_dwh_her=df_dwh_her.reset_index()
@@ -326,21 +299,14 @@ df_her.columns
 
 df_her=df_her.drop(columns='Dossiernummer')
 
-
-# In[ ]:
-
-
 df_her=df_her.rename(columns={'Aanvraag dossier':'Dossiernummer', 'Titel_y':'Titel', 'Geslacht':'m/v'})
 
 
-# In[ ]:
+#Check the columns from datawarehouse database and application information
 
 
 #To check if in 2020 or 2019 or 2018 there is a reapplication
 df_her1=df_her[['Dossiernummer','Referent', 'Titel','Voornaam','Achternaam', 'Inst', 'Land', 'Email','m/v','Opmerking','Hoofdaanvrager', 'NeR2018','NoR2018','PoR2018', 'NeR2019','NoR2019','PoR2019', 'NeR2020','NoR2020','PoR2020']]
-
-
-# In[ ]:
 
 
 df_her1 = df_her1.assign(Rangorde='')
@@ -370,7 +336,7 @@ for i in range(0,l):
 #df_her1.head(2)  
 
 
-# In[ ]:
+# Checking if the reviewer known from the funder database has reviewed applications from year 2018
 
 
 #replacing NaN values with zero for further calculation
@@ -379,44 +345,27 @@ df_her1['NoR2018'].fillna(0, inplace=True)
 df_her1['NeR2018'].fillna(0, inplace=True)
 
 
-# In[ ]:
-
-
 #changing the type of column 2021 for comparison
 np.int64(df_her1['PoR2018'])
 np.int64(df_her1['NoR2018'])
 np.int64(df_her1['NeR2018'])
 
 
-# In[ ]:
-
-
 df_her1.loc[df_her1['PoR2018']==1, 'Opmerking']='Info is in datawarehouse, reviewed an application from the same applicant last time (2018)'
 
-
-# In[ ]:
 
 
 df_her1.loc[df_her1['NoR2018']==1, 'Opmerking']='Info is in datawarehouse, did not respond last time (2018) to review an application from the same applicant'
 
 
-# In[ ]:
-
 
 df_her1.loc[df_her1['NeR2018']==1, 'Opmerking']='Info is in datawarehouse, said no last time (2018) to review an application from the same applicant'
 
-
-# In[ ]:
-
-
+#Checking if the reviewer known from the funder database has reviewed applications from year 2019
 #replacing NaN values with zero for further calculation
 df_her1['PoR2019'].fillna(0, inplace=True)
 df_her1['NoR2019'].fillna(0, inplace=True)
 df_her1['NeR2019'].fillna(0, inplace=True)
-
-
-# In[ ]:
-
 
 #changing the type of column 2021 for comparison
 np.int64(df_her1['PoR2019'])
@@ -424,32 +373,16 @@ np.int64(df_her1['NoR2019'])
 np.int64(df_her1['NeR2019'])
 
 
-# In[ ]:
-
-
 df_her1.loc[df_her1['PoR2019']==1, 'Opmerking']='Info is in datawarehouse, reviewed an application from the same applicant last time (2019)'
-
-
-# In[ ]:
-
-
 df_her1.loc[df_her1['NoR2019']==1, 'Opmerking']='Info is in datawarehouse, did not respond last time (2019) to review an application from the same applicant'
-
-
-# In[ ]:
-
-
 df_her1.loc[df_her1['NeR2019']==1, 'Opmerking']='Info is in datawarehouse, said no last time (2019) to review an application from the same applicant'
 
 
-# In[ ]:
+# Checking if the reviewer known from the funder database has reviewed applications from year 2020
 #replacing NaN values with zero for further calculation
 df_her1['PoR2020'].fillna(0, inplace=True)
 df_her1['NoR2020'].fillna(0, inplace=True)
 df_her1['NeR2020'].fillna(0, inplace=True)
-
-
-# In[ ]:
 
 
 #changing the type of column 2020 for comparison
@@ -458,34 +391,20 @@ np.int64(df_her1['NoR2020'])
 np.int64(df_her1['NeR2020'])
 
 
-# In[ ]:
-
-
 df_her1.loc[df_her1['PoR2020']==1, 'Opmerking']='Info is in datawarehouse, reviewed an application from the same applicant last time (2020)'
 
 
-# In[ ]:
-
-
 df_her1.loc[df_her1['NoR2020']==1, 'Opmerking']='Info is in datawarehouse, did not respond last time (2020) to review an application from the same applicant'
-
-
-# In[ ]:
 
 
 df_her1.loc[df_her1['NeR2020']==1, 'Opmerking']='Info is in datawarehouse, said no last time (2020) to review an application from the same applicant'
 
 df_her1 =df_her1.replace(r'^\s*$', np.nan, regex=True)
 
-
-# In[ ]:
-
-
+#Filtering reviewers who have reviewed ANY proposals of the applicant in past three years
 df_her1=df_her1.drop(columns={'NeR2018',
        'NoR2018', 'PoR2018', 'NeR2019', 'NoR2019', 'PoR2019','NeR2020', 'NoR2020', 'PoR2020'})
 
-
-# In[ ]:
 
 
 df_her1.loc[:, ('Bron')]=''
@@ -533,20 +452,9 @@ df_her3 = df_her3.assign(ScopusLink='')
 df_her3 = df_her3.assign(WebSearchLink='')
 
 
-# In[ ]:
-
-
 df_her3.loc[:, ('Opmerking')]='has assessed an application from the main applicant in the past three years'
-
-
-# In[ ]:
-
-
 df_her3.loc[:, ('Bron')]=''
 df_her3.loc[:, ('Applicants')]=''
-
-
-# In[ ]:
 
 
 #changing the order of the columns  
@@ -556,7 +464,12 @@ df_her3 = df_her3[['Rangorde','Bron','Dossiernummer', 'Referent', 'Titel', 'Voor
 
 #Getting nor-ref for Talent programma as df_nonref
 
-#seperating the reviewer's name from the text
+#Filtering non reviewers
+#(If an applicant has submitted a list of non reviewers who he/she doesnot want his/her application to sent to review):
+
+#The excel file with the non reviewers name is usually provided per applcation number. 
+#Usually non reviwers name is provided with university name and e-mail adress seperated by comma's.
+#Seperating nonreviewers' name from the other text, if the name is given in an excel cell with other things such as university name, email adress etc.
 df_nonref['referent naam']=df_nonref['Naam'].str.split(',').str[0]
 df_nonref.head()
 First_Name=[]
@@ -568,7 +481,11 @@ for person in df_nonref['referent naam']:
 df_nonref['First Name'] = First_Name
 df_nonref['Last Name'] = Last_Name
 #pd.DataFrame({'First_Name':First_Name,'Last_Name':Last_Name})
+
 #Extraction of email adress
+#It can be that these non reviewers are present in the list of reviewers from Expert Lookup and funders database.
+#They can still stay in the list, but with a note that clearly says that they must not be contacted to review the given application.
+#Extraction of email adresses so that we can use the adressess for filtering from reviewers database:
 email=[]
 for referenten in df_nonref['Naam']:
     # \w matches any non-whitespace character
@@ -582,6 +499,7 @@ for referenten in df_nonref['Naam']:
     #declare local variables to store email addresses
     email.append(emaill)
 df_nonref['Email']=email
+
 #extraction of university name
 df_uni = pd.DataFrame()
 for referenten in df_nonref['Naam']:
@@ -619,20 +537,12 @@ df_nRef['ProposalLink']=''
 #changing the order of the columns  
 df_nRef = df_nRef[['Rangorde','Bron','Dossiernummer', 'Referent', 'Titel', 'Voornaam', 'Tuss', 'Achternaam',
        'Inst', 'Land', 'Email', 'Opmerking','URL', 'm/v','ProposalTitle', 'ProposalLink','Applicants',  'Hoofdaanvrager',
-       'ScopusLink', 'WebSearchLink']]       
+       'ScopusLink', 'WebSearchLink']]  
+
 # Appending the dataframes for from datawarehouse, from reapplicaions last year, from non referentens, from collaborators
-
-# In[ ]:
-
-
 #df_RL2=df_RL2.append([df_her1,df_RL2,df_nRef, df_colab])
 #df_RL3=pd.DataFrame().append([df_her1,df_RL2,df_nRef,df_colab])
 df_RL3=pd.DataFrame().append([df_RL2,df_her1, df_her3, df_nRef])
-
-
-# In[ ]:
-
-
 df_RL3 =df_RL3.replace(r'^\s*$', np.nan, regex=True)
 
 
@@ -641,65 +551,30 @@ df_RL3 =df_RL3.replace(r'^\s*$', np.nan, regex=True)
 #check
 #df_RL1.shape
 
-
-# In[ ]:
-
-
 df_RL3['Bron'] = df_RL3['Bron'].fillna('Expert Lookup')
-
-
 
 df_RL3=df_RL3.reset_index(drop=True)
 
-
-# In[ ]:
-
-
 df_RL3 =df_RL3.replace(r'^\s*$', np.nan, regex=True)
-
-
-# In[ ]:
-
 
 df_RL3 = df_RL3.dropna(how='any',
                     subset=['Achternaam'])
 
-
-# In[ ]:
-
-
 #df_RL3=df_RL3.sort_values('Dossiernummer')
-
-
-# In[ ]:
-
 
 df_RL3["Opmerking"].replace({"-": "New"}, inplace=True)
 #https://www.kite.com/python/answers/how-to-replace-column-values-in-a-pandas-dataframe-in-python#:~:text=To%20replace%20values%20in%20the,old%20values%20to%20new%20values.
 
 
-# In[ ]:
-
-
 df_RL3=df_RL3.sort_values('Opmerking',ascending=True).drop_duplicates('Email',keep='last')
 #Source:https://kanoki.org/2019/10/25/how-to-remove-duplicate-data-from-python-dataframe/
-
-
-# In[ ]:
-
-
 df_RL3=df_RL3.sort_values('Applicants')
-
-
-# In[ ]:
-
 
 df_RL4 = df_RL3.reset_index(drop=True)
 
 
 # # Stap 9 Export reference list per proposal
 
-# In[ ]:
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl import Workbook
 from openpyxl.styles import Color, PatternFill, Font, Border, Alignment
