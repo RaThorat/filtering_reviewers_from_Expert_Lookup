@@ -1,9 +1,11 @@
 # filtering_reviewers_from_Expert_Lookup
-Funders use Expert Lookup for a list of reviewers for submitted research proposals. It still takes a lot of time to check whether the selected reviewers from Expert Lookup have already in contact with the funder or whether they have already assessed a proposal.  With this code a funder can easily filter list of reviewers. 
+Funders use Elsevier Expert Lookup for a list of reviewers for submitted research proposals. It still takes a lot of time to check whether the selected reviewers from Expert Lookup are already in contact with the funder or whether they have already assessed a proposal from the funder.
 
-You must have a list of reviewers for the relevant proposal, csv file, downloadable from Expert Lookup. In addition, you use the excel files about proposal info, reviewers suggested and blocked by the applicant and reviewers from the funder datawarehouse-database. So it's a total of five input files.
+With the script a funder can easily filter list of reviewers from Expert Lookup from funder´s database.
 
-Empty example of files (applicant info, reviewers from Expert Lookup, suggested reviewers, blocked reviewers, dwh database) with their column name is given. 
+You must have a list of reviewers for the relevant proposal as a csv file, downloaded from Expert Lookup. In addition, you use the excel files of proposal information, reviewers suggested and blocked by the applicant and reviewers from the funder's database. These are in total five input files.
+
+Empty examples of files (applicant info, reviewers from Expert Lookup, suggested reviewers, blocked reviewers, database) with their column name is given in the github repository:
 
 If you run the code in IDE, a graphic user interface (GUI) appears:
 Click on 'get proposal info' to upload the file applicant info.
