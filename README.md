@@ -48,7 +48,7 @@ The code expects the imported files to be in a specific format. Please refer to 
 
 The code is currently set up to handle Excel and CSV files. If you need to import data from a different file type, you may need to modify the code to support that file type.
 
-## Steps processing 
+## Steps processing a list of reviewers from Expert Lookup
 
 This code is for processing a list of reviewers for a grant proposal. The input is a dataframe containing the reviewers' names, organizations, and countries (df_RL). The code first replaces any empty values in the dataframe with "nan" and resets the index. It then filters a second dataframe (df_pv3) by the grant number and resets the index. The name of the grant applicant is extracted from the filtered df_pv3 and added to df_RL. The columns in df_RL are then renamed.
 
@@ -56,4 +56,9 @@ The code then uses a library called "HumanName" to extract the title, first name
 
 A third dataframe (df_SR) containing suggested reviewers for the grant proposal is then filtered by the grant number and the columns are renamed. The code then compares the last names of the reviewers in df_RL to those in df_SR and adds a new column, "Bron," to df_RL indicating whether the reviewer was selected by the applicant or was found through "Expert Lookup." Finally, the columns in df_RL are rearranged and the index is reset.
 
-## Steps processing
+## Steps processing suggested reviewers list from sources other than Expert Lookup
+This code processes a suggested reviewers list and adds it to a reviewers list. It first filters the suggested reviewers list to only include certain columns: 'Dossiernummer', 'Achternaam', 'Voornaam', 'ScopusLink', 'Email', 'Inst', 'Land'.
+
+It then adds several new columns to the suggested reviewers list with constant values or values from the reviewers list, such as 'Bron', 'Rangorde', 'Referent', 'ProposalTitle', 'ProposalLink', 'Applicants', and 'Hoofdaanvrager'. The columns are then rearranged to be in a specific order.
+
+The suggested reviewers list is then added to the reviewers list and any duplicate records are removed. The resulting list is sorted by 'Dossiernummer' and the index is reset.
