@@ -7,7 +7,7 @@ You must have a list of reviewers for the relevant proposal as a csv file, downl
 
 Empty examples of files (applicant info, reviewers from Expert Lookup, suggested reviewers, blocked reviewers, database) with their column name is given in the github repository.
 
-## Code
+## Graphic user interface Code
 
 This code is a tool for selecting reviewers for proposals. It allows the user to import various data sources and then process and merge the data to generate a list of suggested reviewers.
 
@@ -47,3 +47,13 @@ The code will automatically process and merge the imported data to generate a li
 The code expects the imported files to be in a specific format. Please refer to the documentation for details on the expected file formats.
 
 The code is currently set up to handle Excel and CSV files. If you need to import data from a different file type, you may need to modify the code to support that file type.
+
+## Steps processing 
+
+This code is for processing a list of reviewers for a grant proposal. The input is a dataframe containing the reviewers' names, organizations, and countries (df_RL). The code first replaces any empty values in the dataframe with "nan" and resets the index. It then filters a second dataframe (df_pv3) by the grant number and resets the index. The name of the grant applicant is extracted from the filtered df_pv3 and added to df_RL. The columns in df_RL are then renamed.
+
+The code then uses a library called "HumanName" to extract the title, first name, middle name, and last name for each reviewer and adds these values to df_RL as new columns. The dataframe is then modified to include empty columns for "Rangorde," "URL," and "m/v." Any empty values in df_RL are again replaced with "nan."
+
+A third dataframe (df_SR) containing suggested reviewers for the grant proposal is then filtered by the grant number and the columns are renamed. The code then compares the last names of the reviewers in df_RL to those in df_SR and adds a new column, "Bron," to df_RL indicating whether the reviewer was selected by the applicant or was found through "Expert Lookup." Finally, the columns in df_RL are rearranged and the index is reset.
+
+## Steps processing
