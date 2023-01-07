@@ -98,7 +98,9 @@ This code is used to identify applicants who have previously applied for a subsi
 ## Steps filtering non reviewers or blocked reviewers
 The code is used to extract the names, emails, and affiliations of non-reviewers for a talent program. The data is stored in an excel file and is read into a Pandas dataframe called df_nonref. The names of the non-reviewers are separated from other information such as university name and email address by splitting on commas. The first part of the split is assumed to be the name, and this is then further split into first and last name using the HumanName library. Email addresses are extracted using a regular expression search, and the university name is extracted by searching for keywords in the remaining text after the name and email have been removed. The extracted information is then stored in a new dataframe called df_nRef, which includes columns for proposal number, grant number, last and first name, Scopus Author ID, OrcId, email, affiliation, and country. The grant number is extracted by taking the last digits of the grant number, and the proposal number is extracted by splitting on periods and taking the last element. The dataframe is then exported to an excel file for further use.
 
+## Steps arranging all dataframes into a single dataframe
 
+This code appears to be taking a number of dataframes and combining them into one new dataframe called df_RL3. It then replaces any empty values in the dataframe with NaN, fills any missing values in the 'Bron' column with the string 'Expert Lookup', removes any rows with missing values in the 'Achternaam' column, replaces certain values in the 'Opmerking' column with the string 'New', removes duplicate rows based on the 'Email' column and keeps the last occurrence, and sorts the dataframe by the 'Applicants' column. Finally, it creates a new dataframe called df_RL4 which is a copy of df_RL3 with the index reset.
 
 
 
