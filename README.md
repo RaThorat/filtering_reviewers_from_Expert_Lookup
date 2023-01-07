@@ -100,7 +100,7 @@ The code is used to extract the names, emails, and affiliations of non-reviewers
 
 ## Steps arranging all dataframes into a single dataframe
 
-This code appears to be taking a number of dataframes and combining them into one new dataframe called df_RL3. It then replaces any empty values in the dataframe with NaN, fills any missing values in the 'Bron' column with the string 'Expert Lookup', removes any rows with missing values in the 'Achternaam' column, replaces certain values in the 'Opmerking' column with the string 'New', removes duplicate rows based on the 'Email' column and keeps the last occurrence, and sorts the dataframe by the 'Applicants' column. Finally, it creates a new dataframe called df_RL4 which is a copy of df_RL3 with the index reset.
+This code takes a number of dataframes and combining them into one new dataframe called df_RL3. It then replaces any empty values in the dataframe with NaN, fills any missing values in the 'Bron' column with the string 'Expert Lookup', removes any rows with missing values in the 'Achternaam' column, replaces certain values in the 'Opmerking' column with the string 'New', removes duplicate rows based on the 'Email' column and keeps the last occurrence, and sorts the dataframe by the 'Applicants' column. Finally, it creates a new dataframe called df_RL4 which is a copy of df_RL3 with the index reset.
 
-
-
+## Steps Exporting reference list per proposal
+This code is performing several tasks related to creating and formatting an Excel spreadsheet. It imports several modules related to working with Excel files and data frames in Python, and then defines several variables using data from a data frame (df_RL_1 and df_RL4) and lists. It creates a new Excel workbook and adds a worksheet to it, then adds and formats cell values in the worksheet with information such as file numbers, applicants, titles, and instructions. It also includes empty cells and formatted bold text for certain headings. The code creates an Excel spreadsheet with a summary of information related to proposals and instructions for referencing them.
