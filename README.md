@@ -90,3 +90,9 @@ The given code is used to compare a reference list with pivot table references f
 9. Writes in the 'Opmerking' column whether a reviewer in the data warehouse has worked for the funder in 2021.
 
 10. Removes unnecessary columns from the merged table.
+
+## Steps to identify applicants from previous years
+
+This code is used to identify applicants who have previously applied for a subsidy in 2018, 2019, or 2020. It does this by searching the funders database for common strings of application numbers associated with those years. The resulting data is then merged with another data set and various columns are added or renamed. The resulting data set is used to identify reapplications and other relevant information.
+
+
