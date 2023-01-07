@@ -95,4 +95,10 @@ The given code is used to compare a reference list with pivot table references f
 
 This code is used to identify applicants who have previously applied for a subsidy in 2018, 2019, or 2020. It does this by searching the funders database for common strings of application numbers associated with those years. The resulting data is then merged with another data set and various columns are added or renamed. The resulting data set is used to identify reapplications and other relevant information.
 
+## Steps filtering non reviewers or blocked reviewers
+The code is used to extract the names, emails, and affiliations of non-reviewers for a talent program. The data is stored in an excel file and is read into a Pandas dataframe called df_nonref. The names of the non-reviewers are separated from other information such as university name and email address by splitting on commas. The first part of the split is assumed to be the name, and this is then further split into first and last name using the HumanName library. Email addresses are extracted using a regular expression search, and the university name is extracted by searching for keywords in the remaining text after the name and email have been removed. The extracted information is then stored in a new dataframe called df_nRef, which includes columns for proposal number, grant number, last and first name, Scopus Author ID, OrcId, email, affiliation, and country. The grant number is extracted by taking the last digits of the grant number, and the proposal number is extracted by splitting on periods and taking the last element. The dataframe is then exported to an excel file for further use.
+
+
+
+
 
